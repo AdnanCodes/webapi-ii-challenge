@@ -15,18 +15,46 @@ server.post("/api/posts", (req, res) => {
     DataBase.insert(req.body)
       .then(post => res.status(201).json(post))
       .catch(() => {
+        res.status(500).json({
+          error: "There was an error while saving the post to the database"
+        });
+      });
+  } else {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+});
+
+//POST ENDPOINT for adding comments on to posts
+
+server.post("/api/posts/:id/comments", (req, res) => {
+  const { text } = req.body;
+
+  if (text) {
+    DataBase.insertComment(req.body)
+      .then(comment => {
+        if (comment) {
+          res.status(201).json(comment);
+        } else {
+          res
+            .status(404)
+            .json({
+              message: "The post with the specified ID does not exist."
+            });
+        }
+      })
+      .catch(() =>
         res
           .status(500)
           .json({
-            error: "There was an error while saving the post to the database"
-          });
-      });
+            error: "There was an error while saving the comment to the database"
+          })
+      );
   } else {
     res
       .status(400)
-      .json({
-        errorMessage: "Please provide title and contents for the post."
-      });
+      .json({ errorMessage: "Please provide text for the comment." });
   }
 });
 
