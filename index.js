@@ -86,5 +86,23 @@ server.get("/api/posts/:id", (req, res) => {
     );
 });
 
+server.get("/api/posts/:id/comments", (req, res) => {
+  DataBase.findPostComments(req.params.id)
+    .then(comment => {
+      if (comment) {
+        res.status(200).json(comment);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(() => {
+      res
+        .status(500)
+        .json({ message: "The post with the specified ID does not exist." });
+    });
+});
+
 const port = 3000;
 server.listen(port, () => console.log(`\n API is running on Port ${port}\n`));
