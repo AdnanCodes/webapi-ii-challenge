@@ -86,6 +86,7 @@ server.get("/api/posts/:id", (req, res) => {
     );
 });
 
+//Get request for getting all comments for specific post
 server.get("/api/posts/:id/comments", (req, res) => {
   DataBase.findPostComments(req.params.id)
     .then(comment => {
@@ -101,6 +102,24 @@ server.get("/api/posts/:id/comments", (req, res) => {
       res
         .status(500)
         .json({ message: "The post with the specified ID does not exist." });
+    });
+});
+
+//Delete request for specific post
+
+server.delete("/api/posts/:id", (req, res) => {
+  DataBase.remove(req.params.id)
+    .then(posts => {
+      if (posts > 0) {
+        res.status(200).json({ message: "The post has been deleted" });
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({ error: "The post could not be removed" });
     });
 });
 
