@@ -67,6 +67,7 @@ router.get("/:id", (req, res) => {
   DataBase.findById(req.params.id)
     .then(post => {
       if (post) {
+        //Post returns empty array if post id doesnt match the database - WATCH OUT
         res.status(200).json(post);
       } else {
         res
