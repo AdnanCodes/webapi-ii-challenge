@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "knex": "^0.18.4",
+    "knex": "^2.4.0",
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {
